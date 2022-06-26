@@ -1,24 +1,24 @@
 import PyPDF2 as pdr
 
-def combine_pdf(first_pdf, second_pdf, Combined_file):
-    pdf1 = open(first_pdf, 'rb')
-    pdf2 = open(second_pdf, 'rb')
-    #create 2 pdf objects with data from pdf1 and pdf2
-    obj1 = pdr.PdfFileReader(pdf1)
-    obj2 = pdr.PdfFileReader(pdf2)
+
+#list of pdfs to combine into one
+pdfs_to_combine = []
+
+def combine_pdf(pdf_list, Combined_file):
     #create a writer object
     writer = pdr.PdfFileWriter()
-    #add pages from pdf1 and pdf2 to the writer object
-    for i in range(obj1.numPages):
-        page = obj1.getPage(i)
-        writer.addPage(page)
-    for i in range(obj2.numPages):
-        page = obj2.getPage(i)
-        writer.addPage(page)
-    #create new pdf
+    #create new pdf with name/path from function input
     output_file = open(Combined_file, 'wb')
-    #write to new pdf
-    writer.write(output_file)
-    pdf1.close()
-    pdf2.close()
+    for pdf_item in pdf_list:
+        pdf1 = open(pdf_item, 'rb')
+        #create  pdf object with data from pdf
+        obj1 = pdr.PdfFileReader(pdf1)
+        #add pages from pdf to the writer object
+        for i in range(obj1.numPages):
+            page = obj1.getPage(i)
+            writer.addPage(page)
+        #write to new pdf
+        writer.write(output_file)
+        pdf1.close()
+
     output_file.close()
